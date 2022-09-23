@@ -20,6 +20,7 @@ import controllers.routes
 import models.{Index, Mode, UserAnswers}
 import pages.WhatIsYourPreviousNamePage
 import play.api.i18n.Messages
+import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.Aliases.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.hmrcfrontend.views.Aliases.{ListWithActionsAction, ListWithActionsItem}
@@ -28,12 +29,12 @@ object PreviousNameSummary {
 
   def item(answers: UserAnswers, mode: Mode, i: Int)(implicit messages: Messages): ListWithActionsItem = {
 
-    val name = answers
+    val name = HtmlFormat.escape(answers
       .get(WhatIsYourPreviousNamePage(Index(i)))
       .map(n => Seq(
         Some(n.firstName),
         n.middleNames,
-        Some(n.lastName)).flatten).getOrElse(Seq.empty).mkString(" ")
+        Some(n.lastName)).flatten).getOrElse(Seq.empty).mkString(" "))
 
     ListWithActionsItem(
       name = HtmlContent(name),
