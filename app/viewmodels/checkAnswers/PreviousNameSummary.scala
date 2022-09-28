@@ -20,6 +20,7 @@ import controllers.routes
 import models.{Index, Mode, UserAnswers}
 import pages.WhatIsYourPreviousNamePage
 import play.api.i18n.Messages
+import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.Aliases.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.hmrcfrontend.views.Aliases.{ListWithActionsAction, ListWithActionsItem}
@@ -36,7 +37,7 @@ object PreviousNameSummary {
         Some(n.lastName)).flatten).getOrElse(Seq.empty).mkString(" ")
 
     ListWithActionsItem(
-      name = HtmlContent(name),
+      name = Text(name),
       actions = List(
         ListWithActionsAction(content = Text(Messages("site.change")), visuallyHiddenText = Some(Messages("checkYourAnswers.changePreviousNameHidden", name)), href = routes.WhatIsYourPreviousNameController.onPageLoad(Index(i), mode).url),
         ListWithActionsAction(content = Text(Messages("site.remove")), visuallyHiddenText = Some(Messages("checkYourAnswers.removePreviousNameHidden", name)), href = routes.AreYouSureYouWantToRemovePreviousNameController.onPageLoad(Index(i), mode).url)
