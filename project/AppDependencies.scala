@@ -5,7 +5,7 @@ object AppDependencies {
   private val bootstrapVersion = "8.2.0"
   private val hmrcMongoVersion = "1.6.0"
 
-  val compile = Seq(
+  val compile: Seq[ModuleID] = Seq(
     play.sbt.PlayImport.ws,
     "uk.gov.hmrc"                   %% "play-frontend-hmrc-play-30"             % "8.2.0",
     "uk.gov.hmrc"                   %% "play-conditional-form-mapping-play-30"  % "2.0.0",
@@ -17,11 +17,13 @@ object AppDependencies {
     "com.googlecode.libphonenumber" %  "libphonenumber"                         % "8.12.47"
   )
 
-  val test = Seq(
+  val test: Seq[ModuleID] = Seq(
     "uk.gov.hmrc"             %% "bootstrap-test-play-30"  % bootstrapVersion,
     "org.scalatestplus"       %% "scalacheck-1-17"         % "3.2.17.0",
     "uk.gov.hmrc.mongo"       %% "hmrc-mongo-test-play-30" % hmrcMongoVersion
-  ).map(_ % "test, it")
+  ).map(_ % Test)
+
+  val integration: Seq[ModuleID] = Seq.empty
 
   def apply(): Seq[ModuleID] = compile ++ test
 }

@@ -9,18 +9,12 @@ lazy val appName: String = "national-insurance-number-letter-spike-frontend"
 ThisBuild / majorVersion := 0
 ThisBuild / scalaVersion := "2.13.12"
 
-lazy val root = (project in file("."))
+lazy val microservice = (project in file("."))
   .enablePlugins(PlayScala, SbtAutoBuildPlugin, SbtDistributablesPlugin)
   .disablePlugins(JUnitXmlReportPlugin) //Required to prevent https://github.com/scalatest/scalatest/issues/1427
-  .settings(DefaultBuildSettings.scalaSettings: _*)
-  .settings(DefaultBuildSettings.defaultSettings(): _*)
-  .settings(SbtDistributablesPlugin.publishingSettings: _*)
-  .settings(inConfig(Test)(testSettings): _*)
-  .configs(IntegrationTest)
-  .settings(inConfig(IntegrationTest)(itSettings): _*)
-  .settings(ThisBuild / useSuperShell := false)
   .settings(
     name := appName,
+    ThisBuild / useSuperShell := false,
     RoutesKeys.routesImport ++= Seq(
       "models._",
       "uk.gov.hmrc.play.bootstrap.binders.RedirectUrl"
@@ -50,6 +44,7 @@ lazy val root = (project in file("."))
       "-Wconf:cat=deprecation:ws,cat=feature:ws,cat=optimizer:ws,src=target/.*:s"
     ),
     libraryDependencies ++= AppDependencies(),
+    inConfig(Test)(testSettings),
     retrieveManaged := true,
     resolvers ++= Seq(Resolver.jcenterRepo),
     // concatenate js
@@ -73,14 +68,20 @@ lazy val testSettings: Seq[Def.Setting[_]] = Seq(
   unmanagedSourceDirectories += baseDirectory.value / "test-utils"
 )
 
-lazy val itSettings = Defaults.itSettings ++ Seq(
-  unmanagedSourceDirectories := Seq(
-    baseDirectory.value / "it",
-    baseDirectory.value / "test-utils"
-  ),
-  unmanagedResourceDirectories := Seq(
-    baseDirectory.value / "it" / "resources"
-  ),
-  parallelExecution := false,
-  fork := true
-)
+lazy val it = project
+  .enablePlugins(PlayScala)
+  .dependsOn(microservice % "test->test") // the "test->test" allows reusing test code and test dependencies
+  .settings(
+    DefaultBuildSettings.itSettings,
+    libraryDependencies ++= AppDependencies.integration,
+    Compile / unmanagedResourceDirectories += baseDirectory.value / "test-utils" / "resources",
+    unmanagedSourceDirectories := Seq(
+      baseDirectory.value / "it",
+      baseDirectory.value / "test-utils"
+    ),
+    unmanagedResourceDirectories := Seq(
+      baseDirectory.value / "it" / "resources"
+    ),
+    parallelExecution := false,
+    fork := true
+  )
