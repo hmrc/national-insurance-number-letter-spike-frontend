@@ -16,24 +16,25 @@
 
 package controllers
 
+import audit.AuditService
 import base.SpecBase
-import com.dmanchester.playfop.sapi.PlayFop
+import models.PreviousRelationshipType.CivilPartnership
 import models._
-import pages._
-import play.api.test.FakeRequest
-import play.api.test.Helpers._
-import uk.gov.hmrc.domain.Nino
-import viewmodels.PrintModel
-import views.html.PrintView
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar
+import pages._
 import play.api.inject.bind
-import audit.AuditService
-import models.PreviousRelationshipType.CivilPartnership
+import play.api.test.FakeRequest
+import play.api.test.Helpers._
+import services.FopService
+import uk.gov.hmrc.domain.Nino
+import viewmodels.PrintModel
+import views.html.PrintView
 
 import java.nio.charset.Charset
 import java.time.{LocalDate, YearMonth}
+import scala.concurrent.Future
 
 class PrintControllerSpec extends SpecBase with MockitoSugar {
 
@@ -120,12 +121,12 @@ class PrintControllerSpec extends SpecBase with MockitoSugar {
 
       "must return OK for a GET when user answers is complete" in {
         val mockAuditService = mock[AuditService]
-        val mockFop = mock[PlayFop]
-        when(mockFop.processTwirlXml(any(), any(), any(), any())).thenReturn("hello".getBytes)
+        val mockFopService = mock[FopService]
+        when(mockFopService.render(any())).thenReturn(Future.successful("hello".getBytes))
 
         val application = applicationBuilder(userAnswers = Some(completeUserAnswers))
           .overrides(
-            bind[PlayFop].toInstance(mockFop),
+            bind[FopService].toInstance(mockFopService),
             bind[AuditService].toInstance(mockAuditService)
           )
           .build()
@@ -158,6 +159,4 @@ class PrintControllerSpec extends SpecBase with MockitoSugar {
       }
     }
   }
-
-
 }

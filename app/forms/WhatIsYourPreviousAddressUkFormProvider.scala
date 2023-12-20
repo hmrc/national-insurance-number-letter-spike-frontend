@@ -22,9 +22,9 @@ import play.api.data.Form
 import play.api.data.Forms._
 import models.PreviousAddressUk
 
-import java.time.{LocalDate, YearMonth}
+import java.time.{Clock, LocalDate, YearMonth}
 
-class WhatIsYourPreviousAddressUkFormProvider @Inject() extends Mappings {
+class WhatIsYourPreviousAddressUkFormProvider @Inject() (clock: Clock) extends Mappings {
 
    def apply(): Form[PreviousAddressUk] = Form(
      mapping(
@@ -45,7 +45,7 @@ class WhatIsYourPreviousAddressUkFormProvider @Inject() extends Mappings {
          "whatIsYourPreviousAddressUk.error.from.year.required",
          "whatIsYourPreviousAddressUk.error.from.year.invalid.numeric",
          "whatIsYourPreviousAddressUk.error.from.year.invalid.nonNumeric"
-       ).verifying(inRange(1900, LocalDate.now().getYear, "whatIsYourPreviousAddressUk.error.from.year.range")),
+       ).verifying(inRange(1900, LocalDate.now(clock).getYear, "whatIsYourPreviousAddressUk.error.from.year.range")),
        "to.month" -> int(
          "whatIsYourPreviousAddressUk.error.to.month.required",
          "whatIsYourPreviousAddressUk.error.to.month.invalid.numeric",
@@ -55,7 +55,7 @@ class WhatIsYourPreviousAddressUkFormProvider @Inject() extends Mappings {
          "whatIsYourPreviousAddressUk.error.to.year.required",
          "whatIsYourPreviousAddressUk.error.to.year.invalid.numeric",
          "whatIsYourPreviousAddressUk.error.to.year.invalid.nonNumeric"
-       ).verifying(inRange(1900, LocalDate.now().getYear, "whatIsYourPreviousAddressUk.error.to.year.range")),
+       ).verifying(inRange(1900, LocalDate.now(clock).getYear, "whatIsYourPreviousAddressUk.error.to.year.range")),
     ){ (line1, line2, line3, postcode, fromMonth, fromYear, toMonth, toYear) =>
        PreviousAddressUk(
          line1, line2, Some(line3), postcode,
@@ -76,7 +76,7 @@ class WhatIsYourPreviousAddressUkFormProvider @Inject() extends Mappings {
        ))
      }
        .verifying("whatIsYourPreviousAddressUk.error.dateInFuture", x => {
-         !x.from.isAfter(YearMonth.now()) && !x.to.isAfter(YearMonth.now())
+         !x.from.isAfter(YearMonth.now(clock)) && !x.to.isAfter(YearMonth.now(clock))
        })
        .verifying("whatIsYourPreviousAddressUk.error.datesOutOfOrder", x => {
        (x.from isBefore x.to) || (x.from == x.to)

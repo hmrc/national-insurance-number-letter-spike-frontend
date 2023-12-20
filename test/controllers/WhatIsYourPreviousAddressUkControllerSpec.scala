@@ -31,20 +31,21 @@ import play.api.test.Helpers._
 import repositories.SessionRepository
 import views.html.WhatIsYourPreviousAddressUkView
 
-import java.time.{LocalDate, YearMonth}
+import java.time.{Clock, Instant, LocalDate, YearMonth, ZoneOffset}
 import scala.concurrent.Future
 
 class WhatIsYourPreviousAddressUkControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new WhatIsYourPreviousAddressUkFormProvider()
+  private val clock = Clock.fixed(LocalDate.of(2023, 2, 1).atStartOfDay().toInstant(ZoneOffset.UTC), ZoneOffset.UTC)
+  val formProvider = new WhatIsYourPreviousAddressUkFormProvider(clock)
   val form = formProvider()
 
   lazy val whatIsYourPreviousAddressUkRoute = routes.WhatIsYourPreviousAddressUkController.onPageLoad(Index(0), NormalMode).url
 
-  val startDate = YearMonth.from(LocalDate.now.minusDays(1))
-  val endDate = YearMonth.from(LocalDate.now)
+  val startDate = YearMonth.from(LocalDate.now(clock).minusDays(1))
+  val endDate = YearMonth.from(LocalDate.now(clock))
 
   val validData = PreviousAddressUk(
     addressLine1 = "value 1", addressLine2 = None, addressLine3 = None, postcode = "postcode", from = startDate, to = endDate

@@ -28,8 +28,8 @@ class WhatIsYourChildBenefitNumberFormProviderSpec extends StringFieldBehaviours
 
   val validGen: Gen[String] = for {
     prefix <- Gen.oneOf("CHB", "")
-    digits <- Gen.listOfN(digitCount, Gen.numChar)
-    letters <- Gen.listOfN(2, Gen.alphaChar)
+    digits <- Gen.listOfN(digitCount, Gen.numChar).map(_.mkString)
+    letters <- Gen.listOfN(2, Gen.alphaChar).map(_.mkString)
   } yield {
     prefix ++ digits ++ letters
   }
@@ -56,8 +56,8 @@ class WhatIsYourChildBenefitNumberFormProviderSpec extends StringFieldBehaviours
       "with too few digits" in {
         val invalidGen: Gen[String] = for {
           prefix <- Gen.oneOf("CHB", "")
-          digits <- Gen.listOfN(digitCount - 1, Gen.numChar)
-          letters <- Gen.listOfN(2, Gen.alphaChar)
+          digits <- Gen.listOfN(digitCount - 1, Gen.numChar).map(_.mkString)
+          letters <- Gen.listOfN(2, Gen.alphaChar).map(_.mkString)
         } yield {
           prefix ++ digits ++ letters
         }
@@ -72,8 +72,8 @@ class WhatIsYourChildBenefitNumberFormProviderSpec extends StringFieldBehaviours
       "with too many digits" in {
         val invalidGen: Gen[String] = for {
           prefix <- Gen.oneOf("CHB", "")
-          digits <- Gen.listOfN(digitCount + 1, Gen.numChar)
-          letters <- Gen.listOfN(2, Gen.alphaChar)
+          digits <- Gen.listOfN(digitCount + 1, Gen.numChar).map(_.mkString)
+          letters <- Gen.listOfN(2, Gen.alphaChar).map(_.mkString)
         } yield {
           prefix ++ digits ++ letters
         }

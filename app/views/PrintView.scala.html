@@ -62,7 +62,7 @@
     <a href="@routes.JourneyRecoveryController.onStartAgain.url" class="govuk-link">@messages("print.p2.restart")</a>.</p>
 
     @govukWarningText(WarningText(
-        iconFallbackText = "Warning",
+        iconFallbackText = Some("Warning"),
         content = warningText
     ))
 
