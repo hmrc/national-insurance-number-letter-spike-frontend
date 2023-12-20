@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@
 package controllers
 
 import audit.AuditService
-import com.dmanchester.playfop.sapi.PlayFop
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import logging.Logging
 import models.{JourneyModel, UserAnswers}
@@ -25,34 +24,26 @@ import org.apache.fop.apps.FOUserAgent
 import org.apache.xmlgraphics.util.MimeConstants
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
+import services.FopService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.PrintModel
 import views.xml.xml.PrintTemplate
 
 import javax.inject.Inject
+import scala.concurrent.{ExecutionContext, Future}
 
 class PrintController @Inject()(
                                  val controllerComponents: MessagesControllerComponents,
                                  identify: IdentifierAction,
                                  getData: DataRetrievalAction,
                                  requireData: DataRequiredAction,
-                                 fop: PlayFop,
+                                 fopService: FopService,
                                  template: PrintTemplate,
                                  view: views.html.PrintView,
                                  auditService: AuditService
-                               ) extends FrontendBaseController with I18nSupport with Logging {
+                               )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
 
-  private val userAgentBlock: FOUserAgent => Unit = { foUserAgent: FOUserAgent =>
-    foUserAgent.setAccessibility(true)
-    foUserAgent.setPdfUAEnabled(true)
-    foUserAgent.setAuthor("HMRC forms service")
-    foUserAgent.setProducer("HMRC forms services")
-    foUserAgent.setCreator("HMRC forms services")
-    foUserAgent.setSubject("Get your National Insurance number by post form")
-    foUserAgent.setTitle("Get your National Insurance number by post form")
-  }
-
-  private def withJourneyModel(answers: UserAnswers)(fn: JourneyModel => Result): Result = {
+  private def withJourneyModel(answers: UserAnswers)(fn: JourneyModel => Future[Result]): Future[Result] = {
 
     val (maybeFailures, maybeModel) = JourneyModel.from(answers).pad
 
@@ -68,22 +59,23 @@ class PrintController @Inject()(
       fn(model)
     }.getOrElse {
       logger.warn(s"Journey model creation failed and could not be recovered$errors")
-      Redirect(routes.JourneyRecoveryController.onPageLoad())
+      Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
     }
   }
 
-  def onDownload: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
+  def onDownload: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     withJourneyModel(request.userAnswers) { model =>
       val printModel = PrintModel.from(model)
-      val pdf = fop.processTwirlXml(template.render(printModel, implicitly), MimeConstants.MIME_PDF, foUserAgentBlock = userAgentBlock)
-      auditService.auditDownload(model)
-      Ok(pdf).as("application/octet-stream").withHeaders(CONTENT_DISPOSITION -> "attachment; filename=get-your-national-insurance-number-by-post.pdf")
+      fopService.render(template.render(printModel, implicitly).body).map { pdf =>
+        auditService.auditDownload(model)
+        Ok(pdf).as("application/octet-stream").withHeaders(CONTENT_DISPOSITION -> "attachment; filename=get-your-national-insurance-number-by-post.pdf")
+      }
     }
   }
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
+  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     withJourneyModel(request.userAnswers) { model =>
-      Ok(view(PrintModel.from(model)))
+      Future.successful(Ok(view(PrintModel.from(model))))
     }
   }
 }

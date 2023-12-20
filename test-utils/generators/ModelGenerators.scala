@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -142,9 +142,8 @@ trait ModelGenerators { this: Generators =>
     for {
       firstChar <- Gen.oneOf('A', 'C', 'E', 'H', 'J', 'L', 'M', 'O', 'P', 'R', 'S', 'W', 'X', 'Y').map(_.toString)
       secondChar <- Gen.oneOf('A', 'B', 'C', 'E', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'R', 'S', 'T', 'W', 'X', 'Y', 'Z').map(_.toString)
-      digits <- Gen.listOfN(6, Gen.numChar)
+      digits <- Gen.listOfN(6, Gen.numChar).map(_.mkString)
       lastChar <- Gen.oneOf('A', 'B', 'C', 'D')
     } yield Nino(firstChar ++ secondChar ++ digits :+ lastChar)
   }
-
 }

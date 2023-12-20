@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,12 +24,13 @@ import play.api.data.FormError
 import play.api.i18n.Messages
 import play.api.test.Helpers.{stubMessages, stubMessagesApi}
 
-import java.time.{LocalDate, YearMonth, ZoneOffset}
+import java.time.{Clock, Instant, LocalDate, YearMonth, ZoneOffset}
 
 class WhatIsYourPreviousAddressInternationalFormProviderSpec extends StringFieldBehaviours with DateBehaviours with IntFieldBehaviours {
 
   private implicit val msgs: Messages = stubMessages(stubMessagesApi())
-  val form = new WhatIsYourPreviousAddressInternationalFormProvider()()
+  private val clock = Clock.fixed(LocalDate.of(2023, 2, 1).atStartOfDay().toInstant(ZoneOffset.UTC), ZoneOffset.UTC)
+  private val form = new WhatIsYourPreviousAddressInternationalFormProvider(clock)()
 
   ".addressLine1" - {
 
@@ -133,7 +134,7 @@ class WhatIsYourPreviousAddressInternationalFormProviderSpec extends StringField
 
     val validData = datesBetween(
       min = LocalDate.of(2000, 1, 1),
-      max = LocalDate.now(ZoneOffset.UTC)
+      max = LocalDate.now(clock)
     ).map(YearMonth.from(_))
 
     behave like yearMonthField(form, "from", validData)
@@ -147,7 +148,7 @@ class WhatIsYourPreviousAddressInternationalFormProviderSpec extends StringField
     ".year" - {
       behave like mandatoryField(form, "from.year", FormError("from.year", "whatIsYourPreviousAddressInternational.error.from.year.required"))
 
-      behave like intFieldWithRange(form, "from.year", 1900, LocalDate.now().getYear, FormError("from.year", "whatIsYourPreviousAddressInternational.error.from.year.range", List(1900, LocalDate.now().getYear)))
+      behave like intFieldWithRange(form, "from.year", 1900, LocalDate.now(clock).getYear, FormError("from.year", "whatIsYourPreviousAddressInternational.error.from.year.range", List(1900, LocalDate.now(clock).getYear)))
     }
   }
 
@@ -155,7 +156,7 @@ class WhatIsYourPreviousAddressInternationalFormProviderSpec extends StringField
 
     val validData = datesBetween(
       min = LocalDate.of(2000, 1, 1),
-      max = LocalDate.now(ZoneOffset.UTC)
+      max = LocalDate.now(clock)
     ).map(YearMonth.from(_))
 
     behave like yearMonthField(form, "to", validData)
@@ -169,14 +170,14 @@ class WhatIsYourPreviousAddressInternationalFormProviderSpec extends StringField
     ".year" - {
       behave like mandatoryField(form, "to.year", FormError("to.year", "whatIsYourPreviousAddressInternational.error.to.year.required"))
 
-      behave like intFieldWithRange(form, "to.year", 1, LocalDate.now().getYear, FormError("to.year", "whatIsYourPreviousAddressInternational.error.to.year.range", List(1900, LocalDate.now().getYear)))
+      behave like intFieldWithRange(form, "to.year", 1, LocalDate.now(clock).getYear, FormError("to.year", "whatIsYourPreviousAddressInternational.error.to.year.range", List(1900, LocalDate.now(clock).getYear)))
     }
   }
 
   "form" - {
 
     "must bind if start date and end date match" in {
-      val date = LocalDate.now
+      val date = LocalDate.now(clock)
 
       val data = Map(
         "from.month"   -> date.getMonthValue.toString,
@@ -192,7 +193,7 @@ class WhatIsYourPreviousAddressInternationalFormProviderSpec extends StringField
 
     "must give an error if start date is not before end date" in {
 
-      val startDate = LocalDate.now
+      val startDate = LocalDate.now(clock)
       val endDate   = startDate.minusMonths(1)
 
       val data = Map(
@@ -210,8 +211,8 @@ class WhatIsYourPreviousAddressInternationalFormProviderSpec extends StringField
 
     "must give an error if start date is in the future" in {
 
-      val startDate = YearMonth.now().plusMonths(1)
-      val endDate = YearMonth.now()
+      val startDate = YearMonth.now(clock).plusMonths(1)
+      val endDate = YearMonth.now(clock)
 
       val data = Map(
         "from.month"   -> startDate.getMonthValue.toString,
@@ -223,14 +224,15 @@ class WhatIsYourPreviousAddressInternationalFormProviderSpec extends StringField
       )
 
       val result = form.bind(data)
-      result.errors must contain(FormError("", "whatIsYourPreviousAddressInternational.error.dateInFuture"))
 
+      println(result)
+      result.errors must contain(FormError("", "whatIsYourPreviousAddressInternational.error.dateInFuture"))
     }
 
     "must give an error if end date is in the future" in {
 
-      val startDate = YearMonth.now()
-      val endDate = YearMonth.now().plusMonths(1)
+      val startDate = YearMonth.now(clock)
+      val endDate = YearMonth.now(clock).plusMonths(1)
 
       val data = Map(
         "from.month"   -> startDate.getMonthValue.toString,
@@ -243,7 +245,6 @@ class WhatIsYourPreviousAddressInternationalFormProviderSpec extends StringField
 
       val result = form.bind(data)
       result.errors must contain(FormError("", "whatIsYourPreviousAddressInternational.error.dateInFuture"))
-
     }
   }
 }

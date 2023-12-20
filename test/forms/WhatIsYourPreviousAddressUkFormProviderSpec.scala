@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,11 +20,12 @@ import forms.behaviours.{DateBehaviours, IntFieldBehaviours, StringFieldBehaviou
 import models.PreviousAddressUk
 import play.api.data.FormError
 
-import java.time.{LocalDate, YearMonth, ZoneOffset}
+import java.time.{Clock, LocalDate, YearMonth, ZoneOffset}
 
 class WhatIsYourPreviousAddressUkFormProviderSpec extends StringFieldBehaviours with DateBehaviours with IntFieldBehaviours {
 
-  val form = new WhatIsYourPreviousAddressUkFormProvider()()
+  private val clock = Clock.fixed(LocalDate.of(2023, 2, 1).atStartOfDay().toInstant(ZoneOffset.UTC), ZoneOffset.UTC)
+  private val form = new WhatIsYourPreviousAddressUkFormProvider(clock)()
 
   ".addressLine1" - {
 
@@ -131,7 +132,7 @@ class WhatIsYourPreviousAddressUkFormProviderSpec extends StringFieldBehaviours 
 
     val validData = datesBetween(
       min = LocalDate.of(2000, 1, 1),
-      max = LocalDate.now(ZoneOffset.UTC)
+      max = LocalDate.now(clock)
     ).map(YearMonth.from(_))
 
     behave like yearMonthField(form, "from", validData)
@@ -145,7 +146,7 @@ class WhatIsYourPreviousAddressUkFormProviderSpec extends StringFieldBehaviours 
     ".year" - {
       behave like mandatoryField(form, "from.year", FormError("from.year", "whatIsYourPreviousAddressUk.error.from.year.required"))
 
-      behave like intFieldWithRange(form, "from.year", 1900, LocalDate.now().getYear, FormError("from.year", "whatIsYourPreviousAddressUk.error.from.year.range", List(1900, LocalDate.now().getYear)))
+      behave like intFieldWithRange(form, "from.year", 1900, LocalDate.now(clock).getYear, FormError("from.year", "whatIsYourPreviousAddressUk.error.from.year.range", List(1900, LocalDate.now(clock).getYear)))
     }
 
   }
@@ -154,7 +155,7 @@ class WhatIsYourPreviousAddressUkFormProviderSpec extends StringFieldBehaviours 
 
     val validData = datesBetween(
       min = LocalDate.of(2000, 1, 1),
-      max = LocalDate.now(ZoneOffset.UTC)
+      max = LocalDate.now(clock)
     ).map(YearMonth.from(_))
 
     behave like yearMonthField(form, "to", validData)
@@ -168,14 +169,14 @@ class WhatIsYourPreviousAddressUkFormProviderSpec extends StringFieldBehaviours 
     ".year" - {
       behave like mandatoryField(form, "to.year", FormError("to.year", "whatIsYourPreviousAddressUk.error.to.year.required"))
 
-      behave like intFieldWithRange(form, "to.year", 1, LocalDate.now().getYear, FormError("to.year", "whatIsYourPreviousAddressUk.error.to.year.range", List(1900, LocalDate.now().getYear)))
+      behave like intFieldWithRange(form, "to.year", 1, LocalDate.now(clock).getYear, FormError("to.year", "whatIsYourPreviousAddressUk.error.to.year.range", List(1900, LocalDate.now(clock).getYear)))
     }
   }
 
   "form" - {
 
     "must bind if start date and end date match" in {
-      val date = LocalDate.now
+      val date = LocalDate.now(clock)
 
       val data = Map(
         "from.month"   -> date.getMonthValue.toString,
@@ -192,7 +193,7 @@ class WhatIsYourPreviousAddressUkFormProviderSpec extends StringFieldBehaviours 
 
     "must give an error if start date is not before end date" in {
 
-      val startDate = LocalDate.now
+      val startDate = LocalDate.now(clock)
       val endDate   = startDate.minusMonths(1)
 
       val data = Map(
@@ -211,8 +212,8 @@ class WhatIsYourPreviousAddressUkFormProviderSpec extends StringFieldBehaviours 
 
     "must give an error if start date is in the future" in {
 
-      val startDate = YearMonth.now().plusMonths(1)
-      val endDate = YearMonth.now()
+      val startDate = YearMonth.now(clock).plusMonths(1)
+      val endDate = YearMonth.now(clock)
 
       val data = Map(
         "from.month"   -> startDate.getMonthValue.toString,
@@ -231,8 +232,8 @@ class WhatIsYourPreviousAddressUkFormProviderSpec extends StringFieldBehaviours 
 
     "must give an error if end date is in the future" in {
 
-      val startDate = YearMonth.now()
-      val endDate = YearMonth.now().plusMonths(1)
+      val startDate = YearMonth.now(clock)
+      val endDate = YearMonth.now(clock).plusMonths(1)
 
       val data = Map(
         "from.month"   -> startDate.getMonthValue.toString,

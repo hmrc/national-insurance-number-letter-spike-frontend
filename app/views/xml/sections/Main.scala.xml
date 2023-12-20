@@ -15,12 +15,12 @@
  *@
 
 @import viewmodels.PrintModel
-@import views.xml.xml.sections._
+@import views.xml.xml.sections.{PersonalDetails => Details, _}
 
 @this(
         mainHeader: MainHeader,
         mainFooter: MainFooter,
-        personalDetails: PersonalDetails,
+        personalDetails: Details,
         employment: Employment,
         documents: Documents,
         benefits: Benefits,

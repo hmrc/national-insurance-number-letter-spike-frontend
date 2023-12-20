@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,9 +23,9 @@ import play.api.data.Forms._
 import models.{Country, PreviousAddressInternational}
 import play.api.i18n.Messages
 
-import java.time.{LocalDate, YearMonth}
+import java.time.{Clock, LocalDate, YearMonth, ZoneOffset}
 
-class WhatIsYourPreviousAddressInternationalFormProvider @Inject() extends Mappings {
+class WhatIsYourPreviousAddressInternationalFormProvider @Inject() (clock: Clock) extends Mappings {
 
    def apply()(implicit messages: Messages): Form[PreviousAddressInternational] = Form(
      mapping(
@@ -49,7 +49,7 @@ class WhatIsYourPreviousAddressInternationalFormProvider @Inject() extends Mappi
          "whatIsYourPreviousAddressInternational.error.from.year.required",
          "whatIsYourPreviousAddressInternational.error.from.year.invalid.numeric",
          "whatIsYourPreviousAddressInternational.error.from.year.invalid.nonNumeric"
-       ).verifying(inRange(1900, LocalDate.now().getYear, "whatIsYourPreviousAddressInternational.error.from.year.range")),
+       ).verifying(inRange(1900, LocalDate.now(clock).getYear, "whatIsYourPreviousAddressInternational.error.from.year.range")),
        "to.month" -> int(
          "whatIsYourPreviousAddressInternational.error.to.month.required",
          "whatIsYourPreviousAddressInternational.error.to.month.invalid.numeric",
@@ -59,7 +59,7 @@ class WhatIsYourPreviousAddressInternationalFormProvider @Inject() extends Mappi
          "whatIsYourPreviousAddressInternational.error.to.year.required",
          "whatIsYourPreviousAddressInternational.error.to.year.invalid.numeric",
          "whatIsYourPreviousAddressInternational.error.to.year.invalid.nonNumeric"
-       ).verifying(inRange(1900, LocalDate.now().getYear, "whatIsYourPreviousAddressInternational.error.to.year.range")),
+       ).verifying(inRange(1900, LocalDate.now(clock).getYear, "whatIsYourPreviousAddressInternational.error.to.year.range")),
      ){ (line1, line2, line3, postcode, country, fromMonth, fromYear, toMonth, toYear) =>
        PreviousAddressInternational(
          line1, line2, line3, postcode, country,
@@ -72,7 +72,7 @@ class WhatIsYourPreviousAddressInternationalFormProvider @Inject() extends Mappi
        a.to.getYear, a.to.getMonthValue
      )))
        .verifying("whatIsYourPreviousAddressInternational.error.dateInFuture", x => {
-         !x.from.isAfter(YearMonth.now()) && !x.to.isAfter(YearMonth.now())
+         !x.from.isAfter(YearMonth.now(clock)) && !x.to.isAfter(YearMonth.now(clock))
        })
        .verifying("whatIsYourPreviousAddressInternational.error.datesOutOfOrder", x => {
        (x.from isBefore x.to) || (x.from == x.to)
