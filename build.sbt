@@ -72,13 +72,11 @@ lazy val it = project
     DefaultBuildSettings.itSettings(),
     libraryDependencies ++= AppDependencies.integration,
     Compile / unmanagedResourceDirectories += baseDirectory.value / "test-utils" / "resources",
-    unmanagedSourceDirectories := Seq(
+    Compile / unmanagedSourceDirectories := Seq(
       baseDirectory.value / "it",
       baseDirectory.value / "test-utils"
     ),
-    unmanagedResourceDirectories := Seq(
+    Compile / unmanagedResourceDirectories := Seq(
       baseDirectory.value / "it" / "resources"
-    ),
-    parallelExecution := false,
-    fork := true
+    )
   )
