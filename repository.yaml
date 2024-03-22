@@ -1,5 +1,4 @@
 repoVisibility: public_0C3F0CE3E6E6448FAD341E7BFA50FCD333E06A20CFF05FCACE61154DDBBADF71
-
 leakDetectionExemptions:
   - ruleId: 'aws_secret_access_key'
     filePaths:
@@ -17,3 +16,6 @@ leakDetectionExemptions:
     filePaths:
       - '/app/forms/WhenDidYouStopWorkingForEmployerFormProvider.scala'
     text: 'requiredKey'
+test-repositories:
+  - nino-letter-performance-tests
+  - nino-letter-ui-tests
