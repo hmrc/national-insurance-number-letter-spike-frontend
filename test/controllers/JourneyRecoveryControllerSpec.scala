@@ -89,7 +89,7 @@ class JourneyRecoveryControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = None).build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.JourneyRecoveryController.onStartAgain.url).withSession("key" -> "value")
+        val request = FakeRequest(GET, routes.JourneyRecoveryController.onStartAgain().url).withSession("key" -> "value")
 
         val result = route(application, request).value
 

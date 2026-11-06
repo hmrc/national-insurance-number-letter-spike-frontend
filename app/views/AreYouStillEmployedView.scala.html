@@ -26,7 +26,7 @@
 
 @layout(pageTitle = title(form, messages("areYouStillEmployed.title"), Some(messages("section.employmentHistory")))) {
 
-    @formHelper(action = routes.AreYouStillEmployedController.onSubmit(index, mode), 'autoComplete -> "off") {
+    @formHelper(action = routes.AreYouStillEmployedController.onSubmit(index, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

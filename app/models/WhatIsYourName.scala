@@ -26,5 +26,5 @@ final case class WhatIsYourName(
                                )
 
 object WhatIsYourName {
-  implicit val format = Json.format[WhatIsYourName]
+  implicit val format: OFormat[WhatIsYourName] = Json.format[WhatIsYourName]
 }

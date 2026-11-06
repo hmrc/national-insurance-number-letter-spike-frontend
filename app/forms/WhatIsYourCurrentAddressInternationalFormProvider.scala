@@ -38,6 +38,6 @@ class WhatIsYourCurrentAddressInternationalFormProvider @Inject() extends Mappin
        "country" -> text("whatIsYourCurrentAddressInternational.error.country.required")
          .verifying("whatIsYourCurrentAddressInternational.error.country.required", c => Country.internationalCountries.exists(_.code == c))
          .transform[Country](value => Country.internationalCountries.find(_.code == value).get, _.code)
-     )(CurrentAddressInternational.apply)(CurrentAddressInternational.unapply)
+     )(CurrentAddressInternational.apply)(o => Some(Tuple.fromProductTyped(o)))
    )
  }

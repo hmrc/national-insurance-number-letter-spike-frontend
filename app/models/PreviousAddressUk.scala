@@ -37,5 +37,5 @@ final case class PreviousAddressUk(
 }
 
 object PreviousAddressUk extends YearMonthFormat {
-  implicit val format = Json.format[PreviousAddressUk]
+  implicit val format: OFormat[PreviousAddressUk] = Json.format[PreviousAddressUk]
 }

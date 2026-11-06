@@ -27,7 +27,7 @@
 
 @layout(pageTitle = title(form, messages("doYouHavePrimaryDocument.title"), Some(messages("section.supportingDocuments")))) {
 
-    @formHelper(action = routes.DoYouHavePrimaryDocumentController.onSubmit(mode), 'autoComplete -> "off") {
+    @formHelper(action = routes.DoYouHavePrimaryDocumentController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

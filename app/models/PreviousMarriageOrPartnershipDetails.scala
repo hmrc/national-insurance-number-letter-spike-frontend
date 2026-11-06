@@ -23,5 +23,5 @@ import java.time.LocalDate
 final case class PreviousMarriageOrPartnershipDetails(startDate: LocalDate, endDate: LocalDate, endingReason: String)
 
 object PreviousMarriageOrPartnershipDetails {
-  implicit val format = Json.format[PreviousMarriageOrPartnershipDetails]
+  implicit val format: OFormat[PreviousMarriageOrPartnershipDetails] = Json.format[PreviousMarriageOrPartnershipDetails]
 }

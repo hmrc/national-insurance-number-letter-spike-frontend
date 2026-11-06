@@ -63,7 +63,7 @@
 
 @layout(pageTitle = title(form, messages("whatIsYourPreviousAddressInternational.title"), Some(messages("section.addressHistory")))) {
 
-    @formHelper(action = routes.WhatIsYourPreviousAddressInternationalController.onSubmit(index, mode), 'autoComplete -> "on") {
+    @formHelper(action = routes.WhatIsYourPreviousAddressInternationalController.onSubmit(index, mode), Symbol("autoComplete") -> "on") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(

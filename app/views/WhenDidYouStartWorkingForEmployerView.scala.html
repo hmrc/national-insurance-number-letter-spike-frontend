@@ -26,7 +26,7 @@
 
 @layout(pageTitle = title(form, messages("whenDidYouStartForEmployer.title"), Some(messages("section.employmentHistory")))) {
 
-    @formHelper(action = routes.WhenDidYouStartWorkingForEmployerController.onSubmit(index, mode), 'autoComplete -> "off") {
+    @formHelper(action = routes.WhenDidYouStartWorkingForEmployerController.onSubmit(index, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form, errorLinkOverrides = Map("value" -> "value.day")))

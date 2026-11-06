@@ -58,8 +58,8 @@
         InsetText(content = HtmlContent("<p class=\"govuk-body\">" + messages("print.address1") + "<br/>" + messages("print.address2")+ "<br/>" + messages("print.address3") + "</p>"))
     )
 
-    <p class="govuk-body">@messages("print.p2.1") <a class="govuk-link" href="@routes.CheckYourAnswersController.onPageLoad">@messages("print.p2.change")</a> @messages("print.p2.2")
-    <a href="@routes.JourneyRecoveryController.onStartAgain.url" class="govuk-link">@messages("print.p2.restart")</a>.</p>
+    <p class="govuk-body">@messages("print.p2.1") <a class="govuk-link" href="@routes.CheckYourAnswersController.onPageLoad()">@messages("print.p2.change")</a> @messages("print.p2.2")
+    <a href="@routes.JourneyRecoveryController.onStartAgain().url" class="govuk-link">@messages("print.p2.restart")</a>.</p>
 
     @govukWarningText(WarningText(
         iconFallbackText = Some("Warning"),

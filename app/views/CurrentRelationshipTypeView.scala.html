@@ -26,7 +26,7 @@
 
 @layout(pageTitle = title(form, messages("currentRelationshipType.title"), Some(messages("section.relationshipHistory")))) {
 
-    @formHelper(action = routes.CurrentRelationshipTypeController.onSubmit(mode), 'autoComplete -> "off") {
+    @formHelper(action = routes.CurrentRelationshipTypeController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form,  errorLinkOverrides = Map("value" -> "value_0")))

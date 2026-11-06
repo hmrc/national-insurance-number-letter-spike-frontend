@@ -37,5 +37,5 @@ final case class CurrentAddressInternational(
 }
 
 object CurrentAddressInternational {
-  implicit val format = Json.format[CurrentAddressInternational]
+  implicit val format: OFormat[CurrentAddressInternational] = Json.format[CurrentAddressInternational]
 }

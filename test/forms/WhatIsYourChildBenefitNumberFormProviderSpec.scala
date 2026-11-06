@@ -63,7 +63,7 @@ class WhatIsYourChildBenefitNumberFormProviderSpec extends StringFieldBehaviours
         }
 
         forAll(invalidGen -> "invalidDataItem") {
-          dataItem: String =>
+          (dataItem: String) =>
             val result = form.bind(Map(fieldName -> dataItem)).apply(fieldName)
             result.errors mustBe Seq(FormError(fieldName, formatKey, Seq("(CHB)?\\d{8}[A-Za-z]{2}")))
         }
@@ -79,7 +79,7 @@ class WhatIsYourChildBenefitNumberFormProviderSpec extends StringFieldBehaviours
         }
 
         forAll(invalidGen -> "invalidDataItem") {
-          dataItem: String =>
+          (dataItem: String) =>
             val result = form.bind(Map(fieldName -> dataItem)).apply(fieldName)
             result.errors mustBe Seq(FormError(fieldName, formatKey, Seq("(CHB)?\\d{8}[A-Za-z]{2}")))
         }
@@ -94,7 +94,7 @@ class WhatIsYourChildBenefitNumberFormProviderSpec extends StringFieldBehaviours
         }
 
         forAll(invalidGen -> "invalidDataItem") {
-          dataItem: String =>
+          (dataItem: String) =>
             val result = form.bind(Map(fieldName -> dataItem)).apply(fieldName)
             result.errors mustBe Seq(FormError(fieldName, formatKey, Seq("(CHB)?\\d{8}[A-Za-z]{2}")))
         }

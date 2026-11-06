@@ -65,9 +65,9 @@ class Navigator @Inject()() {
     case WhenDidYouStopWorkingForEmployerPage(_)                => _ => routes.EmploymentHistoryController.onPageLoad(NormalMode)
     case AreYouSureYouWantToRemovePreviousEmployerPage(_)       => _ => routes.EmploymentHistoryController.onPageLoad(NormalMode)
     case DoYouHavePrimaryDocumentPage                           => doYouHaveAPrimaryDocumentRoutes
-    case WhichPrimaryDocumentPage                               => _ => routes.CheckYourAnswersController.onPageLoad
+    case WhichPrimaryDocumentPage                               => _ => routes.CheckYourAnswersController.onPageLoad()
     case DoYouHaveTwoSecondaryDocumentsPage                     => doYouHaveTwoSecondaryDocumentsRoutes
-    case WhichAlternativeDocumentsPage                          => _ => routes.CheckYourAnswersController.onPageLoad
+    case WhichAlternativeDocumentsPage                          => _ => routes.CheckYourAnswersController.onPageLoad()
     case _ => _ => routes.IndexController.onPageLoad
   }
 
@@ -166,7 +166,7 @@ class Navigator @Inject()() {
   private def doYouHaveTwoSecondaryDocumentsRoutes(answers: UserAnswers): Call =
     answers.get(DoYouHaveTwoSecondaryDocumentsPage).map {
       case true  => routes.WhichAlternativeDocumentsController.onPageLoad(NormalMode)
-      case false => routes.CheckYourAnswersController.onPageLoad
+      case false => routes.CheckYourAnswersController.onPageLoad()
     }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
 
   private val checkRouteMap: Page => UserAnswers => Call = {
@@ -187,24 +187,24 @@ class Navigator @Inject()() {
     case WhatIsYourEmployersAddressPage(index) => _ => routes.WhenDidYouStartWorkingForEmployerController.onPageLoad(index, CheckMode)
     case WhenDidYouStartWorkingForEmployerPage(index) => _ => routes.AreYouStillEmployedController.onPageLoad(index, CheckMode)
     case AreYouStillEmployedPage(index) => areYouStillEmployedCheckRoutes(_, index)
-    case _ => _ => routes.CheckYourAnswersController.onPageLoad
+    case _ => _ => routes.CheckYourAnswersController.onPageLoad()
   }
 
   private def doYouHaveAPreviousNameCheckRoutes(answers: UserAnswers): Call =
     (answers.get(DoYouHaveAPreviousNamePage), answers.get(WhatIsYourPreviousNamePage(Index(0)))) match {
       case (Some(true), None) => routes.WhatIsYourPreviousNameController.onPageLoad(Index(0), CheckMode)
-      case (_, _) => routes.CheckYourAnswersController.onPageLoad
+      case (_, _) => routes.CheckYourAnswersController.onPageLoad()
     }
 
   private def areYouMarriedCheckRoutes(answers: UserAnswers): Call =
     (answers.get(AreYouMarriedPage), answers.get(CurrentRelationshipTypePage)) match {
       case (Some(true), None) => routes.CurrentRelationshipTypeController.onPageLoad(CheckMode)
-      case (_, _) => routes.CheckYourAnswersController.onPageLoad
+      case (_, _) => routes.CheckYourAnswersController.onPageLoad()
     }
 
   private def currentRelationshipTypeCheckRoutes(answers: UserAnswers): Call =
     answers.get(WhenDidYouGetMarriedPage) match {
-      case Some(_) => routes.CheckYourAnswersController.onPageLoad
+      case Some(_) => routes.CheckYourAnswersController.onPageLoad()
       case _       => routes.WhenDidYouGetMarriedController.onPageLoad(CheckMode)
     }
 
@@ -213,12 +213,12 @@ class Navigator @Inject()() {
       case true  =>
         val previousRelationships = answers.get(PreviousRelationshipsQuery).getOrElse(Seq.empty)
         routes.PreviousRelationshipTypeController.onPageLoad(Index(previousRelationships.length), CheckMode)
-      case false => routes.CheckYourAnswersController.onPageLoad
+      case false => routes.CheckYourAnswersController.onPageLoad()
     }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
 
   private def previousRelationshipTypeCheckRoutes(answers: UserAnswers, index: Index): Call =
     answers.get(PreviousMarriageOrPartnershipDetailsPage(index)) match {
-      case Some(_) => routes.CheckYourAnswersController.onPageLoad
+      case Some(_) => routes.CheckYourAnswersController.onPageLoad()
       case _       => routes.PreviousMarriageOrPartnershipDetailsController.onPageLoad(index, CheckMode)
     }
 
@@ -226,51 +226,51 @@ class Navigator @Inject()() {
     (answers.get(IsYourCurrentAddressInUkPage), answers.get(WhatIsYourCurrentAddressUkPage), answers.get(WhatIsYourCurrentAddressInternationalPage)) match {
       case (Some(true), None, _) => routes.WhatIsYourCurrentAddressUkController.onPageLoad(CheckMode)
       case (Some(false), _, None) => routes.WhatIsYourCurrentAddressInternationalController.onPageLoad(CheckMode)
-      case (_, _, _) => routes.CheckYourAnswersController.onPageLoad
+      case (_, _, _) => routes.CheckYourAnswersController.onPageLoad()
     }
 
   private def haveYouEverClaimedChildBenefitCheckRoutes(answers: UserAnswers): Call =
     (answers.get(HaveYouEverClaimedChildBenefitPage), answers.get(DoYouKnowYourChildBenefitNumberPage)) match {
       case (Some(true), None) => routes.DoYouKnowYourChildBenefitNumberController.onPageLoad(CheckMode)
-      case (_, _) => routes.CheckYourAnswersController.onPageLoad
+      case (_, _) => routes.CheckYourAnswersController.onPageLoad()
     }
 
   private def doYouKnowYourChildBenefitNumberCheckRoutes(answers: UserAnswers): Call =
     (answers.get(DoYouKnowYourChildBenefitNumberPage), answers.get(WhatIsYourChildBenefitNumberPage)) match {
       case (Some(true), None) => routes.WhatIsYourChildBenefitNumberController.onPageLoad(CheckMode)
-      case (_, _) => routes.CheckYourAnswersController.onPageLoad
+      case (_, _) => routes.CheckYourAnswersController.onPageLoad()
     }
 
   private def haveYouEverReceivedOtherUkBenefitsCheckRoutes(answers: UserAnswers): Call =
     (answers.get(HaveYouEverReceivedOtherUkBenefitsPage), answers.get(WhatOtherUkBenefitsHaveYouReceivedPage)) match {
       case (Some(true), None) => routes.WhatOtherUkBenefitsHaveYouReceivedController.onPageLoad(CheckMode)
-      case (_, _) => routes.CheckYourAnswersController.onPageLoad
+      case (_, _) => routes.CheckYourAnswersController.onPageLoad()
     }
 
   private def doYouKnowYourNationalInsuranceNumberCheckRoutes(answers: UserAnswers): Call =
     (answers.get(DoYouKnowYourNationalInsuranceNumberPage), answers.get(WhatIsYourNationalInsuranceNumberPage)) match {
       case (Some(true), None) => routes.WhatIsYourNationalInsuranceNumberController.onPageLoad(CheckMode)
-      case (_, _) => routes.CheckYourAnswersController.onPageLoad
+      case (_, _) => routes.CheckYourAnswersController.onPageLoad()
     }
 
   private def doYouHavePrimaryDocumentCheckRoutes(answers: UserAnswers): Call =
     (answers.get(DoYouHavePrimaryDocumentPage), answers.get(WhichPrimaryDocumentPage)) match {
-      case (Some(true), Some(_)) => routes.CheckYourAnswersController.onPageLoad
+      case (Some(true), Some(_)) => routes.CheckYourAnswersController.onPageLoad()
       case (Some(true), None) => routes.WhichPrimaryDocumentController.onPageLoad(CheckMode)
       case (_, _) => routes.DoYouHaveTwoSecondaryDocumentsController.onPageLoad(CheckMode)
     }
 
   private def doYouHaveTwoSecondaryDocumentsCheckRoutes(answers: UserAnswers): Call =
     (answers.get(DoYouHaveTwoSecondaryDocumentsPage), answers.get(WhichAlternativeDocumentsPage)) match {
-      case (Some(true), Some(_)) => routes.CheckYourAnswersController.onPageLoad
+      case (Some(true), Some(_)) => routes.CheckYourAnswersController.onPageLoad()
       case (Some(true), None) => routes.WhichAlternativeDocumentsController.onPageLoad(CheckMode)
-      case (Some(false), _) => routes.CheckYourAnswersController.onPageLoad
+      case (Some(false), _) => routes.CheckYourAnswersController.onPageLoad()
       case (_, _) => routes.JourneyRecoveryController.onPageLoad()
     }
 
   private def areYouStillEmployedCheckRoutes(answers: UserAnswers, index: Index): Call =
     answers.get(AreYouStillEmployedPage(index)).map {
-      case true => routes.CheckYourAnswersController.onPageLoad
+      case true => routes.CheckYourAnswersController.onPageLoad()
       case false => routes.WhenDidYouStopWorkingForEmployerController.onPageLoad(index, CheckMode)
     }.getOrElse(routes.JourneyRecoveryController.onPageLoad())
 
