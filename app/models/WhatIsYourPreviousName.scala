@@ -21,5 +21,5 @@ import play.api.libs.json._
 final case class WhatIsYourPreviousName(firstName: String, middleNames: Option[String], lastName: String)
 
 object WhatIsYourPreviousName {
-  implicit val format = Json.format[WhatIsYourPreviousName]
+  implicit val format: OFormat[WhatIsYourPreviousName] = Json.format[WhatIsYourPreviousName]
 }

@@ -420,7 +420,7 @@ class NavigatorSpec extends SpecBase {
       }
 
       "go from the which primary document page to the check your answers page" in {
-        navigator.nextPage(WhichPrimaryDocumentPage, NormalMode, emptyUserAnswers) mustBe routes.CheckYourAnswersController.onPageLoad
+        navigator.nextPage(WhichPrimaryDocumentPage, NormalMode, emptyUserAnswers) mustBe routes.CheckYourAnswersController.onPageLoad()
       }
 
       "go from the do you have two secondary documents page" - {
@@ -432,7 +432,7 @@ class NavigatorSpec extends SpecBase {
 
         "to check your answers page when the user selects no" in {
           val answers = emptyUserAnswers.set(DoYouHaveTwoSecondaryDocumentsPage, false).success.value
-          navigator.nextPage(DoYouHaveTwoSecondaryDocumentsPage, NormalMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad
+          navigator.nextPage(DoYouHaveTwoSecondaryDocumentsPage, NormalMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad()
         }
 
         "to the journey recovery page when the user has no selection" in {
@@ -441,7 +441,7 @@ class NavigatorSpec extends SpecBase {
       }
 
       "go from the which two secondary documents page to the check your answers page" in {
-        navigator.nextPage(WhichAlternativeDocumentsPage, NormalMode, emptyUserAnswers) mustBe routes.CheckYourAnswersController.onPageLoad
+        navigator.nextPage(WhichAlternativeDocumentsPage, NormalMode, emptyUserAnswers) mustBe routes.CheckYourAnswersController.onPageLoad()
       }
     }
 
@@ -454,14 +454,14 @@ class NavigatorSpec extends SpecBase {
             .set(AreYouMarriedPage, true).success.value
             .set(CurrentRelationshipTypePage, CurrentRelationshipType.Marriage).success.value
 
-          navigator.nextPage(AreYouMarriedPage, CheckMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad
+          navigator.nextPage(AreYouMarriedPage, CheckMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad()
         }
 
         "to the check your answers page if no" in {
           val answers = emptyUserAnswers
             .set(AreYouMarriedPage, false).get
 
-          navigator.nextPage(AreYouMarriedPage, CheckMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad
+          navigator.nextPage(AreYouMarriedPage, CheckMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad()
         }
 
         "to the current relationship type page if the current relationship type is not set" in {
@@ -476,7 +476,7 @@ class NavigatorSpec extends SpecBase {
         "to the check your answers page if the current relationship date is set" in {
           val answers = emptyUserAnswers
             .set(WhenDidYouGetMarriedPage, LocalDate.now).success.value
-          navigator.nextPage(CurrentRelationshipTypePage, CheckMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad
+          navigator.nextPage(CurrentRelationshipTypePage, CheckMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad()
         }
 
         "to the current relationship date page if the current relationship date is not set" in {
@@ -507,7 +507,7 @@ class NavigatorSpec extends SpecBase {
         "to the check your answers page if answer is no" in {
           val answers = emptyUserAnswers
             .set(HaveYouPreviouslyBeenInAMarriageOrCivilPartnershipPage, false).success.value
-          navigator.nextPage(HaveYouPreviouslyBeenInAMarriageOrCivilPartnershipPage, CheckMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad
+          navigator.nextPage(HaveYouPreviouslyBeenInAMarriageOrCivilPartnershipPage, CheckMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad()
         }
       }
 
@@ -521,7 +521,7 @@ class NavigatorSpec extends SpecBase {
           val previous = PreviousMarriageOrPartnershipDetails(LocalDate.of(2000,1,1), LocalDate.of(2001, 1, 1), "reason")
           val answers = emptyUserAnswers
             .set(PreviousMarriageOrPartnershipDetailsPage(Index(0)), previous).success.value
-          navigator.nextPage(PreviousRelationshipTypePage(Index(0)), CheckMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad
+          navigator.nextPage(PreviousRelationshipTypePage(Index(0)), CheckMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad()
         }
       }
 
@@ -533,14 +533,14 @@ class NavigatorSpec extends SpecBase {
             .set(DoYouKnowYourChildBenefitNumberPage, true).get
             .set(WhatIsYourChildBenefitNumberPage, "CHB12345678").get
 
-          navigator.nextPage(HaveYouEverClaimedChildBenefitPage, CheckMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad
+          navigator.nextPage(HaveYouEverClaimedChildBenefitPage, CheckMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad()
         }
 
         "to the check your answers page if answer is no" in {
           val answers = emptyUserAnswers
             .set(HaveYouEverClaimedChildBenefitPage, false).get
 
-          navigator.nextPage(HaveYouEverClaimedChildBenefitPage, CheckMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad
+          navigator.nextPage(HaveYouEverClaimedChildBenefitPage, CheckMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad()
         }
 
         "to the do you know your child benefit number page if answer is yes and do you know your child benefit number is not set" in {
@@ -559,14 +559,14 @@ class NavigatorSpec extends SpecBase {
             .set(DoYouKnowYourChildBenefitNumberPage, true).get
             .set(WhatIsYourChildBenefitNumberPage, "CHB12345678").get
 
-          navigator.nextPage(DoYouKnowYourChildBenefitNumberPage, CheckMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad
+          navigator.nextPage(DoYouKnowYourChildBenefitNumberPage, CheckMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad()
         }
 
         "to the check your answers page if answer is no" in {
           val answers = emptyUserAnswers
             .set(DoYouKnowYourChildBenefitNumberPage, false).get
 
-          navigator.nextPage(DoYouKnowYourChildBenefitNumberPage, CheckMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad
+          navigator.nextPage(DoYouKnowYourChildBenefitNumberPage, CheckMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad()
         }
 
         "to the what is your child benefit number page if answer is yes and child benefit number is not set" in {
@@ -585,14 +585,14 @@ class NavigatorSpec extends SpecBase {
             .set(DoYouHaveAPreviousNamePage, true).get
             .set(WhatIsYourPreviousNamePage(Index(0)), WhatIsYourPreviousName("first", None, "last")).get
 
-          navigator.nextPage(DoYouHaveAPreviousNamePage, CheckMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad
+          navigator.nextPage(DoYouHaveAPreviousNamePage, CheckMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad()
         }
 
         "to the check your answers page if answer is no" in {
           val answers = emptyUserAnswers
             .set(DoYouHaveAPreviousNamePage, false).get
 
-          navigator.nextPage(DoYouHaveAPreviousNamePage, CheckMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad
+          navigator.nextPage(DoYouHaveAPreviousNamePage, CheckMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad()
         }
 
         "to the what is your previous name page if answer is yes and previous name is not set" in {
@@ -611,7 +611,7 @@ class NavigatorSpec extends SpecBase {
             .set(IsYourCurrentAddressInUkPage, true).get
             .set(WhatIsYourCurrentAddressUkPage, CurrentAddressUk("line 1", None, None, "AA1 1AA")).get
 
-          navigator.nextPage(IsYourCurrentAddressInUkPage, CheckMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad
+          navigator.nextPage(IsYourCurrentAddressInUkPage, CheckMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad()
         }
 
         "to the check your answers page if answer is no and international address is set" in {
@@ -619,7 +619,7 @@ class NavigatorSpec extends SpecBase {
             .set(IsYourCurrentAddressInUkPage, false).get
             .set(WhatIsYourCurrentAddressInternationalPage, CurrentAddressInternational("line 1", None, None, None, Country("FR", "France"))).get
 
-          navigator.nextPage(IsYourCurrentAddressInUkPage, CheckMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad
+          navigator.nextPage(IsYourCurrentAddressInUkPage, CheckMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad()
         }
 
         "to the uk address page if answer is yes and uk address is not set" in {
@@ -645,14 +645,14 @@ class NavigatorSpec extends SpecBase {
             .set(DoYouKnowYourNationalInsuranceNumberPage, true).get
             .set(WhatIsYourNationalInsuranceNumberPage, Nino("AA123456A")).get
 
-          navigator.nextPage(DoYouKnowYourNationalInsuranceNumberPage, CheckMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad
+          navigator.nextPage(DoYouKnowYourNationalInsuranceNumberPage, CheckMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad()
         }
 
         "to the check your answers page if answer is no" in {
           val answers = emptyUserAnswers
             .set(DoYouKnowYourNationalInsuranceNumberPage, false).get
 
-          navigator.nextPage(DoYouKnowYourNationalInsuranceNumberPage, CheckMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad
+          navigator.nextPage(DoYouKnowYourNationalInsuranceNumberPage, CheckMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad()
         }
 
         "to the what is your national insurance number page if answer is no and national insurance number is not set" in {
@@ -671,14 +671,14 @@ class NavigatorSpec extends SpecBase {
             .set(HaveYouEverReceivedOtherUkBenefitsPage, true).get
             .set(WhatOtherUkBenefitsHaveYouReceivedPage, "some other benefits").get
 
-          navigator.nextPage(HaveYouEverReceivedOtherUkBenefitsPage, CheckMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad
+          navigator.nextPage(HaveYouEverReceivedOtherUkBenefitsPage, CheckMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad()
         }
 
         "to the check your answers page if answer is no" in {
           val answers = emptyUserAnswers
             .set(HaveYouEverReceivedOtherUkBenefitsPage, false).get
 
-          navigator.nextPage(HaveYouEverReceivedOtherUkBenefitsPage, CheckMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad
+          navigator.nextPage(HaveYouEverReceivedOtherUkBenefitsPage, CheckMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad()
         }
 
         "to the what other uk benefits page if answer is no and what other uk benefits is not set" in {
@@ -696,7 +696,7 @@ class NavigatorSpec extends SpecBase {
           val answers = emptyUserAnswers
             .set(DoYouHavePrimaryDocumentPage, true).success.value
             .set(WhichPrimaryDocumentPage, BirthCertificate).success.value
-          navigator.nextPage(DoYouHavePrimaryDocumentPage, CheckMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad
+          navigator.nextPage(DoYouHavePrimaryDocumentPage, CheckMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad()
         }
 
         "to the which primary documents page when the user selects yes and which primary document is not set" in {
@@ -757,7 +757,7 @@ class NavigatorSpec extends SpecBase {
           val answers = emptyUserAnswers
             .set(AreYouStillEmployedPage(Index(0)), true).success.value
 
-          navigator.nextPage(AreYouStillEmployedPage(Index(0)), CheckMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad
+          navigator.nextPage(AreYouStillEmployedPage(Index(0)), CheckMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad()
         }
 
       }
@@ -776,14 +776,14 @@ class NavigatorSpec extends SpecBase {
             .set(DoYouHaveTwoSecondaryDocumentsPage, true).success.value
             .set(WhichAlternativeDocumentsPage, Set[AlternativeDocuments](MarriageOrCivilPartnershipCertificate, AdoptionCertificate)).success.value
 
-          navigator.nextPage(DoYouHaveTwoSecondaryDocumentsPage, CheckMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad
+          navigator.nextPage(DoYouHaveTwoSecondaryDocumentsPage, CheckMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad()
         }
 
         "to the check your answers page when false" in {
           val answers = emptyUserAnswers
             .set(DoYouHaveTwoSecondaryDocumentsPage, false).success.value
 
-          navigator.nextPage(DoYouHaveTwoSecondaryDocumentsPage, CheckMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad
+          navigator.nextPage(DoYouHaveTwoSecondaryDocumentsPage, CheckMode, answers) mustBe routes.CheckYourAnswersController.onPageLoad()
         }
 
       }
@@ -791,7 +791,7 @@ class NavigatorSpec extends SpecBase {
       "must go from a page that doesn't exist in the edit route map to CheckYourAnswers" in {
 
         case object UnknownPage extends Page
-        navigator.nextPage(UnknownPage, CheckMode, UserAnswers("id")) mustBe routes.CheckYourAnswersController.onPageLoad
+        navigator.nextPage(UnknownPage, CheckMode, UserAnswers("id")) mustBe routes.CheckYourAnswersController.onPageLoad()
       }
     }
   }

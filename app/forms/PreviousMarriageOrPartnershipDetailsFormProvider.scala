@@ -42,7 +42,7 @@ class PreviousMarriageOrPartnershipDetailsFormProvider @Inject() extends Mapping
        ).verifying(maxDate(LocalDate.now, "previousMarriageOrPartnershipDetails.error.endDate.past")),
       "endReason" -> text("previousMarriageOrPartnershipDetails.error.endReason.required")
         .verifying(maxLength(100, "previousMarriageOrPartnershipDetails.error.endReason.length"))
-    )(PreviousMarriageOrPartnershipDetails.apply)(PreviousMarriageOrPartnershipDetails.unapply)
+    )(PreviousMarriageOrPartnershipDetails.apply)(o => Some(Tuple.fromProductTyped(o)))
        .verifying("previousMarriageOrPartnershipDetails.error.datesOutOfOrder", x => {
          (x.startDate isBefore x.endDate) || (x.startDate == x.endDate)
        })

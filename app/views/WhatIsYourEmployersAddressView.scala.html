@@ -30,7 +30,7 @@
 
 @layout(pageTitle = title(form, messages("whatIsYourEmployersAddress.title"), Some(messages("section.employmentHistory")))) {
 
-    @formHelper(action = routes.WhatIsYourEmployersAddressController.onSubmit(index, mode), 'autoComplete -> "on") {
+    @formHelper(action = routes.WhatIsYourEmployersAddressController.onSubmit(index, mode), Symbol("autoComplete") -> "on") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

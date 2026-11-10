@@ -58,7 +58,7 @@ class AnswerExtractorSpec extends SpecBase {
 
     "must pass the answer into the provided block when the answer exists in user answers" in {
 
-      val answers = emptyUserAnswers.set(TestPage, 1).success.value
+      val answers: UserAnswers = emptyUserAnswers.set(TestPage, 1).success.value
       implicit val request = buildRequest(answers)
 
       val controller = new TestController()
@@ -80,7 +80,7 @@ class AnswerExtractorSpec extends SpecBase {
 
     "must pass the answer into the provided block when the answer exists in user answers" in {
 
-      val answers = emptyUserAnswers.set(TestPage, 1).success.value
+      val answers: UserAnswers = emptyUserAnswers.set(TestPage, 1).success.value
       implicit val request = buildRequest(answers)
 
       val controller = new TestController()

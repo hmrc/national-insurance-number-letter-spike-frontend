@@ -43,7 +43,7 @@
 
 @layout(pageTitle = title(form, titleText, Some(messages("section.personalDetails")))) {
 
-    @formHelper(action = routes.DoYouHaveAPreviousNameController.onSubmit(mode), 'autoComplete -> "off") {
+    @formHelper(action = routes.DoYouHaveAPreviousNameController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

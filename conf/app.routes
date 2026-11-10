@@ -11,15 +11,15 @@ GET         /language/:lang                              controllers.LanguageSwi
 GET         /refresh-session                             controllers.KeepAliveController.keepAlive
 
 GET         /there-is-a-problem                          controllers.JourneyRecoveryController.onPageLoad(continueUrl: Option[RedirectUrl] ?= None)
-GET         /start-again                                 controllers.JourneyRecoveryController.onStartAgain
+GET         /start-again                                 controllers.JourneyRecoveryController.onStartAgain()
 
-GET         /check-your-answers                          controllers.CheckYourAnswersController.onPageLoad
+GET         /check-your-answers                          controllers.CheckYourAnswersController.onPageLoad()
 
 GET         /print-form                                  controllers.PrintController.onDownload
 GET         /next-steps                                  controllers.PrintController.onPageLoad
 
-GET         /account/sign-out-survey                     controllers.auth.AuthController.signOut
-GET         /account/sign-out                            controllers.auth.AuthController.signOutNoSurvey
+GET         /account/sign-out-survey                     controllers.auth.AuthController.signOut()
+GET         /account/sign-out                            controllers.auth.AuthController.signOutNoSurvey()
 GET         /application-form-reset                      controllers.auth.SignedOutController.onPageLoad
 
 GET         /unauthorised                                controllers.UnauthorisedController.onPageLoad

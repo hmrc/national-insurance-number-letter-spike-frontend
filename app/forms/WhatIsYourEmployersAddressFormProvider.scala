@@ -35,6 +35,6 @@ class WhatIsYourEmployersAddressFormProvider @Inject() extends Mappings {
          .verifying(maxLength(100, "whatIsYourEmployersAddress.error.addressLine3.length"))),
        "postcode" -> text("whatIsYourEmployersAddress.error.postcode.required")
          .verifying(maxLength(100, "whatIsYourEmployersAddress.error.postcode.length"))
-    )(EmployersAddress.apply)(EmployersAddress.unapply)
+    )(EmployersAddress.apply)(o => Some(Tuple.fromProductTyped(o)))
    )
  }

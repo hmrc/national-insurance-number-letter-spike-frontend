@@ -47,10 +47,10 @@ class WhenDidYouStartWorkingForEmployerControllerSpec extends SpecBase with Mock
 
   lazy val whenDidYouStartWorkingForPreviousEmployerRoute = routes.WhenDidYouStartWorkingForEmployerController.onPageLoad(Index(0), NormalMode).url
 
-  def getRequest(): FakeRequest[AnyContentAsEmpty.type] =
+  def getRequest: FakeRequest[AnyContentAsEmpty.type] =
     FakeRequest(GET, whenDidYouStartWorkingForPreviousEmployerRoute)
 
-  def postRequest(): FakeRequest[AnyContentAsFormUrlEncoded] =
+  def postRequest: FakeRequest[AnyContentAsFormUrlEncoded] =
     FakeRequest(POST, whenDidYouStartWorkingForPreviousEmployerRoute)
       .withFormUrlEncodedBody(
         "value.day"   -> validAnswer.getDayOfMonth.toString,

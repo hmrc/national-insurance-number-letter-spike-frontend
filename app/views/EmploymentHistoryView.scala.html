@@ -51,7 +51,7 @@
 
 @layout(pageTitle = title(form, titleText, Some(messages("section.employmentHistory")))) {
 
-    @formHelper(action = routes.EmploymentHistoryController.onSubmit(mode), 'autoComplete -> "off") {
+    @formHelper(action = routes.EmploymentHistoryController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

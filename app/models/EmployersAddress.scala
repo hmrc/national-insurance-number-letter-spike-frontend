@@ -31,5 +31,5 @@ final case class EmployersAddress(
 }
 
 object EmployersAddress {
-  implicit val format = Json.format[EmployersAddress]
+  implicit val format: OFormat[EmployersAddress] = Json.format[EmployersAddress]
 }

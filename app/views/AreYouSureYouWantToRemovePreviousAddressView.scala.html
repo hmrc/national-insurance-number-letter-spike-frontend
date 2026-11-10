@@ -27,7 +27,7 @@
 
 @layout(pageTitle = title(form, messages("areYouSureYouWantToRemovePreviousAddress.title"), Some(messages("section.addressHistory")))) {
 
-    @formHelper(action = routes.AreYouSureYouWantToRemovePreviousAddressController.onSubmit(index, mode), 'autoComplete -> "off") {
+    @formHelper(action = routes.AreYouSureYouWantToRemovePreviousAddressController.onSubmit(index, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

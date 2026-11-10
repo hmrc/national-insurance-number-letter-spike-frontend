@@ -33,5 +33,5 @@ final case class CurrentAddressUk(
 }
 
 object CurrentAddressUk {
-  implicit val format = Json.format[CurrentAddressUk]
+  implicit val format: OFormat[CurrentAddressUk] = Json.format[CurrentAddressUk]
 }

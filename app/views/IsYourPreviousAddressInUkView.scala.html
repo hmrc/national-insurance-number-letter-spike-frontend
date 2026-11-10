@@ -26,7 +26,7 @@
 
 @layout(pageTitle = title(form, messages("isYourPreviousAddressInUk.title"), Some(messages("section.addressHistory")))) {
 
-    @formHelper(action = routes.IsYourPreviousAddressInUkController.onSubmit(index, mode), 'autoComplete -> "off") {
+    @formHelper(action = routes.IsYourPreviousAddressInUkController.onSubmit(index, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

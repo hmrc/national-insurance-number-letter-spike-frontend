@@ -35,7 +35,7 @@
 
 @layout(pageTitle = title(form, messages(s"previousMarriageOrPartnershipDetails.title$relationship"), Some(messages("section.relationshipHistory")))) {
 
-    @formHelper(action = routes.PreviousMarriageOrPartnershipDetailsController.onSubmit(index, mode), 'autoComplete -> "off") {
+    @formHelper(action = routes.PreviousMarriageOrPartnershipDetailsController.onSubmit(index, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(

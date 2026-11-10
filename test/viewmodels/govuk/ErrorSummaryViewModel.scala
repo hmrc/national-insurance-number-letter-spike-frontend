@@ -41,7 +41,7 @@ class ErrorSummaryViewModel
       mapping(
       "date"   -> localDate("invalid", "allRequired", "twoRequired", "oneRequired"),
       "string" -> text()
-      )(Data.apply)(Data.unapply)
+      )(Data.apply)(o => Some(Tuple.fromProductTyped(o)))
     )
 
   private implicit val msgs: Messages = stubMessages(stubMessagesApi())
@@ -52,7 +52,7 @@ class ErrorSummaryViewModel
 
       val boundForm = testForm.bind(Map("date.month" -> "1", "date.year" -> "1"))
 
-      val errorSummary = ErrorSummaryViewModel(boundForm)
+      val errorSummary = ErrorSummaryViewModel.apply(boundForm)
       errorSummary.errorList.head.href.value mustEqual "#date.day"
       errorSummary.errorList(1).href.value mustEqual "#string"
     }
@@ -61,7 +61,7 @@ class ErrorSummaryViewModel
 
       val boundForm = testForm.bind(Map("date.day" -> "1", "date.year" -> "1"))
 
-      val errorSummary = ErrorSummaryViewModel(boundForm)
+      val errorSummary = ErrorSummaryViewModel.apply(boundForm)
       errorSummary.errorList.head.href.value mustEqual "#date.month"
       errorSummary.errorList(1).href.value mustEqual "#string"
     }
@@ -70,7 +70,7 @@ class ErrorSummaryViewModel
 
       val boundForm = testForm.bind(Map("date.day" -> "1", "date.month" -> "1"))
 
-      val errorSummary = ErrorSummaryViewModel(boundForm)
+      val errorSummary = ErrorSummaryViewModel.apply(boundForm)
       errorSummary.errorList.head.href.value mustEqual "#date.year"
       errorSummary.errorList(1).href.value mustEqual "#string"
     }
@@ -79,7 +79,7 @@ class ErrorSummaryViewModel
 
       val boundForm = testForm.bind(Map.empty[String, String])
 
-      val errorSummary = ErrorSummaryViewModel(boundForm)
+      val errorSummary = ErrorSummaryViewModel.apply(boundForm)
       errorSummary.errorList.head.href.value mustEqual "#date"
       errorSummary.errorList(1).href.value mustEqual "#string"
     }

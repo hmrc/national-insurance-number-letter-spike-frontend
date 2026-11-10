@@ -52,10 +52,10 @@ class WhenDidYouStopWorkingForEmployerControllerSpec extends SpecBase with Mocki
       .set(WhenDidYouStartWorkingForEmployerPage(Index(0)), startDate).success.value
       .set(WhatIsYourEmployersNamePage(Index(0)), employerName).success.value
 
-  def getRequest(): FakeRequest[AnyContentAsEmpty.type] =
+  def getRequest: FakeRequest[AnyContentAsEmpty.type] =
     FakeRequest(GET, whenDidYouStopWorkingForPreviousEmployerRoute)
 
-  def postRequest(): FakeRequest[AnyContentAsFormUrlEncoded] =
+  def postRequest: FakeRequest[AnyContentAsFormUrlEncoded] =
     FakeRequest(POST, whenDidYouStopWorkingForPreviousEmployerRoute)
       .withFormUrlEncodedBody(
         "value.day"   -> validAnswer.getDayOfMonth.toString,

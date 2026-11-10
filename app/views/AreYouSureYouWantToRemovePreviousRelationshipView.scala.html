@@ -33,7 +33,7 @@
 
     @layout(pageTitle = title(form, messages("areYouSureYouWantToRemovePreviousRelationship.title"), Some(messages("section.relationshipHistory")))) {
 
-    @formHelper(action = routes.AreYouSureYouWantToRemovePreviousRelationshipController.onSubmit(index, mode), 'autoComplete -> "off") {
+    @formHelper(action = routes.AreYouSureYouWantToRemovePreviousRelationshipController.onSubmit(index, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

@@ -34,7 +34,7 @@
 
     @layout(pageTitle = title(form, messages("areYouSureYouWantToRemoveEmployer.title"), Some(messages("section.employmentHistory")))) {
 
-    @formHelper(action = routes.AreYouSureYouWantToRemoveEmployerController.onSubmit(index, mode), 'autoComplete -> "off") {
+    @formHelper(action = routes.AreYouSureYouWantToRemoveEmployerController.onSubmit(index, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
